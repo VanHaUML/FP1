@@ -65,7 +65,7 @@ http://www.brightlightmultimedia.com/blcafe/ShrtStories-SidewalkSong.htm
 ```
 
 
-![Word Count](/test.png?raw=true "WordCount.png")
-![Lissajous Curve](/test.png?raw=true "Lissajous.png")
-![3D Histogram](/test.png?raw=true "3D.png")
-![2D Plot](/test.png?raw=true "2D.png")
+![Word Count](/WordCount.png?raw=true "WordCount")
+![Lissajous Curve](/Lissajous.png?raw=true "Lissajous")
+![3D Histogram](/3d.png?raw=true "3D")
+![2D Plot](/2d.png?raw=true "2D")
