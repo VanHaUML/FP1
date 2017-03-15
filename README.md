@@ -1,104 +1,71 @@
-# Final Project Assignment 1: Exploration (FP1)
-DUE Sunday, March 12, 2017
+## My Library: plot
+My name: Van Ha
 
-#Part 1: Get github
-If you don't have a github account, go get one. https://github.com/
-This whole assignment will be done and submitted via github, and you're already here!
- 
-#Part 2: Try a Library
-In this exercise, you will play with at least one library provided by the Racket developers. You will have the opportunity to explore another library later.
+I played around with the plot library from racket. I wanted to use data as well but could
+not figure out the error about installation and user scope. Nonetheless, I mainly used the
+plotted things in 2D and 3D. Used different colors and line types as well as domains to see
+what the plotting functions would produce. Used various built in functions to produce
+the graphs. Created my own data to use since I couldn't think of anything else.
+The program reads a text file into a string which is then split into a list of
+strings. Then that list is hashed to a hash table with the word as the key and the
+number of occurrences of that word as its value. If the word doesn't exist, it is
+added to the hash table and if it does exist, the value is incremented. Then that
+hash table is converted to a list of cons cells which in turn is turned into a list of
+vectors. Finally that list of vectors is plotted into a histogram with the word on
+the x-axis and the number of occurrences of that word on the y-axis. Had to resize
+the window otherwise all the data would overlap on one another. All plots
+are sent to a file rather than a window on the screen. Text in the file
+was from the URL below.
 
-Please choose libraries that you think you might be interested in using in your final project.
+http://www.brightlightmultimedia.com/blcafe/ShrtStories-SidewalkSong.htm
 
-Start off at the Racket home page, http://racket-lang.org/, and then click on the Documentation link, taking you here: http://docs.racket-lang.org/.
- 
-There are lots of libraries. Play with one.
- 
-Your job is to explore one library and write up your results. Load the library and write some code to drive it around.
-For example, maybe you are interested in retrieving data from the web. If we look at the net/url library, we will find functions for creating URLs, issuing HTTP GET commands, and displaying the results. Here is a little bit of code for driving around a few of the functions in this library:
-```racket
-#lang racket
-
-(require net/url)
-
-(define myurl (string->url "http://www.cs.uml.edu/"))
-(define myport (get-pure-port myurl))
-(display-pure-port myport)
-```
-Notice that `(require net/url)` is all you need to put in your buffer in order to load the library and start using it.
-This above is a trivial example; to complete this for the purposes of this assignment (if you go down the path of pulling HTTP requests), you should use the parsing libraries to parse the HTML, JSON, or XML that is returned.
-
-### The following libraries are not allowed for project explorations:
-* games/cards
-* racket/gui
-* racket/draw 
-
-You can still use these in your project, but you must explore different libraries for this assignment.
-
-#Part 3: Write your Report
-Write your report right in this file. Instructions are below. Delete the instructions when you are done. Also delete all my explanation (this stuff), as I've already read it.
-
-You are allowed to change/delete anything in this file to make it into your report. It will be public, FYI.
-
-This file is formatted with the [**markdown** language][markdown], so take a glance at how that works.
-
-This file IS your report for the assignment, including code and your story.
-
-Code is super easy in markdown, which you can easily do inline `(require net/url)` or do in whole blocks:
 ```
 #lang racket
 
-(require net/url)
+(require plot)
 
-(define myurl (string->url "http://www.cs.uml.edu/"))
-(define myport (get-pure-port myurl))
-(display-pure-port myport)
+; creates blank hash table
+(define ht (make-hash))
+
+; convers list of pairs into list of vectors
+(define (plistToVector lst)
+  (map (λ (x) (vector (car x) (cdr x))) lst))
+
+; adds new hash key and value to hash table
+(define (addNewHash hasht lst)
+  (hash-set! hasht (car lst) 1)
+  (hashList hasht (cdr lst)))
+
+; increments hash key already in hash table
+(define (incHash hasht lst)
+  (hash-set! hasht (car lst) (add1 (hash-ref hasht (car lst))))
+                                   (hashList hasht (cdr lst)))
+
+; creates hash table from list of strings
+(define (hashList hasht lst)
+    (cond [(null? lst) hasht]
+        [(hash-has-key? hasht (car lst)) (incHash hasht lst)]
+        [else (addNewHash hasht lst)]))
+
+; uses above functions to create a histogram of word count in a file
+(define storyString (file->string "sidewalksong.txt"))
+(define stringList (string-split storyString))
+(define storyHash (hashList ht stringList))
+(define hashedList (hash->list storyHash))
+(define vList (plistToVector hashedList))
+
+(plot-width 1920)
+(plot-height 1080)
+(plot-x-tick-label-anchor 'top-right)
+(plot-x-tick-label-angle 90)
+(plot-file (discrete-histogram vList) #:x-label "Word" #:y-label "Number of Occurrences" #:title "Word Count" "WordCount" 'png)
+
+
+
 ```
 
-## My Library: (library name here)
-My name: **put your real name here**
 
-Write what you did!
-Remember that this report must include:
-
-* a narrative of what you did
-* highlights of code that you wrote, with explanation
-* output from your code demonstrating what it produced
-* at least one diagram or figure showing your work
-
-The narrative itself should be no longer than 350 words. 
-
-You need at least one image (output, diagrams). Images must be uploaded to your repository, and then displayed with markdown in this file; like this:
-
-![test image](/testimage.png?raw=true "test image")
-
-You must provide credit to the source for any borrowed images.
-
-Code should be delivered in two ways:
-
-1. Full files should be added to your version of this repository.
-1. Key excerpts of your code should be copied into this .md file, formatted to look like code, and explained.
-
-Ask questions publicly in the email group.
-
-## How to Prepare and Submit this assignment
-
-1. To start, [**fork** this repository][forking]. 
-  2. (This assignment is just one README.md file, so you can edit it right in github)
-1. Modify the README.md file and [**commit**][ref-commit] changes to complete your report.
-1. Add your racket file to the repository. 
-1. Ensure your changes (report in md file, and added rkt file) are committed to your forked repository.
-1. [Create a **pull request**][pull-request] on the original repository to turn in the assignment.
-
-## Project Schedule
-This is the first part of a larger project. The final project schedule is [here][schedule].
-
-<!-- Links -->
-[schedule]: https://github.com/oplS17projects/FP-Schedule
-[markdown]: https://help.github.com/articles/markdown-basics/
-[forking]: https://guides.github.com/activities/forking/
-[ref-clone]: http://gitref.org/creating/#clone
-[ref-commit]: http://gitref.org/basic/#commit
-[ref-push]: http://gitref.org/remotes/#push
-[pull-request]: https://help.github.com/articles/creating-a-pull-request
-
+![Word Count](/test.png?raw=true "WordCount.png")
+![Lissajous Curve](/test.png?raw=true "Lissajous.png")
+![3D Histogram](/test.png?raw=true "3D.png")
+![2D Plot](/test.png?raw=true "2D.png")
