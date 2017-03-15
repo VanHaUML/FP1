@@ -1,9 +1,0 @@
-#lang racket
-
-(require plot)
-
-(plot-file (list (axes)
-            (function sin (- pi) pi #:label "y = sin(x)" #:color 3 #:style 'dot)
-            (function (lambda (x) (+ x 3)) #:label "y = x + 3" #:color 12 #:style 'solid)) "2d" 'png)
-
-(plot3d-file (discrete-histogram3d '(#(1 1 1) #(1 2 3) #(2 2 2)) #:label "steps" #:line-color 56) "3d" 'png)
