@@ -2,13 +2,13 @@
 
 (require plot)
 
-(plot-file (parametric (λ (t) (vector (* 3 (cos (* 3 t))) (sin (* 2 t)))) 0 (* 2 pi)) #:title "Lissajous Curve" "Lissajous" 'png)
+(plot-file (parametric (λ (t) (vector (* 3 (cos (* 3 t))) (sin (* 2 t)))) 0 (* 2 pi)) #:title "Lissajous Curve" "Lissajous.png" 'png)
 
 (plot-file (list (axes)
             (function sin (- pi) pi #:label "y = sin(x)" #:color 3 #:style 'dot)
-             (function (lambda (x) (+ x 3)) #:label "y = x + 3" #:color 12 #:style 'solid)) #:title "Just Some Equations" "2d" 'png)
+             (function (lambda (x) (+ x 3)) #:label "y = x + 3" #:color 12 #:style 'solid)) #:title "Just Some Equations" "2d.png" 'png)
 
-(plot3d-file (discrete-histogram3d '(#(1 1 1) #(1 2 3) #(2 2 2)) #:label "steps" #:line-color 56) #:title "3D Histogram" "3d" 'png) 
+(plot3d-file (discrete-histogram3d '(#(1 1 1) #(1 2 3) #(2 2 2)) #:label "steps" #:line-color 56) #:title "3D Histogram" "3d.png" 'png) 
 
 ; creates blank hash table
 (define ht (make-hash))
@@ -44,4 +44,4 @@
 (plot-height 1080)
 (plot-x-tick-label-anchor 'top-right)
 (plot-x-tick-label-angle 90)
-(plot-file (discrete-histogram vList) #:x-label "Word" #:y-label "Number of Occurrences" #:title "Word Count" "WordCount" 'png)
+(plot-file (discrete-histogram vList) #:x-label "Word" #:y-label "Number of Occurrences" #:title "Word Count" "WordCount.png" 'png)
